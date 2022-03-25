@@ -1,7 +1,14 @@
-putting
+Putting
 ==============================
 
-Statistical analysis of putting data
+Statistical analysis of putting data, reproducing the analysis from
+[here](https://statmodeling.stat.columbia.edu/2019/03/21/new-golf-putting-data-and-a-new-golf-putting-model/)
+and [here](https://mc-stan.org/users/documentation/case-studies/golf.html) using
+[cookiecutter-cmdstanpy-analysis](https://github.com/teddygroves/cookiecutter-cmdstanpy-analysis).
+
+![](results/plots/distance.png)
+
+![](results/plots/residuals.png)
 
 # How to install dependencies
 
