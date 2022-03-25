@@ -1,0 +1,16 @@
+name = "logistic_new"
+stan_file = "src/stan/logistic.stan"
+data_dir = "data/prepared/new"
+modes = ["prior", "posterior", "cross_validation"]
+
+[stanc_options]
+warn-pedantic = true
+
+[sample_kwargs]
+show_progress = true
+save_warmup = false
+iter_warmup = 1000
+iter_sampling = 1000
+
+[sample_kwargs.cross_validation]
+chains = 1

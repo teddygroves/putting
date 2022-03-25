@@ -1,0 +1,13 @@
+name = "angle_old"
+stan_file = "src/stan/angle.stan"
+data_dir = "data/prepared/old"
+modes = ["prior", "posterior", "cross_validation"]
+
+[sample_kwargs]
+show_progress = true
+save_warmup = false
+iter_warmup = 1000
+iter_sampling = 1000
+
+[sample_kwargs.cross_validation]
+chains = 1
