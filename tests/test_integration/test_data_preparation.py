@@ -9,55 +9,55 @@ from pandas.testing import assert_frame_equal
 from src.data_preparation import (
     N_CV_FOLDS,
     get_stan_inputs,
-    prepare_data_interaction,
-    prepare_data_no_interaction,
+    prepare_data_new,
+    prepare_data_old,
 )
 from src.util import CoordDict
 
 EXAMPLE_RAW_MEASUREMENTS = pd.DataFrame(
     {
-        "X1": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
-        "X2": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
-        "yButIThoughtIdAddSomeLetters": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
+        "x": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
+        "y": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
+        "n": [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
     }
 )
+EXPECTED_INDEX_OLD = pd.Index(["old_" + str(i) for i in range(11)])
+EXPECTED_INDEX_NEW = pd.Index(["new_" + str(i) for i in range(11)])
 
 
 @pytest.mark.parametrize(
     "prepare_data_function,name,raw_measurements,expected_measurements,expected_coords",
     [
         (
-            prepare_data_interaction,
-            "interaction",
+            prepare_data_old,
+            "old",
             EXAMPLE_RAW_MEASUREMENTS,
             pd.DataFrame(
                 {
-                    "x1": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
-                    "x2": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
+                    "x": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
                     "y": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
-                    "x1:x2": [1, 4, 9, 1, 4, 9, 1, 4, 9, 1, 4],
-                }
+                    "n": [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+                },
+                index=EXPECTED_INDEX_OLD,
             ),
             {
-                "covariate": ["x1", "x2", "x1:x2"],
-                "observation": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                "observation": EXPECTED_INDEX_OLD.tolist(),
             },
         ),
         (
-            prepare_data_no_interaction,
-            "no_interaction",
+            prepare_data_new,
+            "new",
             EXAMPLE_RAW_MEASUREMENTS,
             pd.DataFrame(
                 {
-                    "x1": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
-                    "x2": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
+                    "x": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
                     "y": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2],
-                    "x1:x2": [1, 4, 9, 1, 4, 9, 1, 4, 9, 1, 4],
-                }
+                    "n": [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+                },
+                index=EXPECTED_INDEX_NEW,
             ),
             {
-                "covariate": ["x1", "x2"],
-                "observation": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                "observation": EXPECTED_INDEX_NEW.tolist(),
             },
         ),
     ],
