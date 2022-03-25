@@ -8,15 +8,15 @@ from cmdstanpy import write_stan_json
 
 from src.data_preparation import (
     get_stan_inputs,
-    prepare_data_fake_interaction,
-    prepare_data_interaction,
-    prepare_data_no_interaction,
+    prepare_data_new,
+    prepare_data_old,
 )
 from src.util import check_is_df
 
 RAW_DIR = os.path.join("data", "raw")
 RAW_DATA_FILES = {
-    "raw_measurements": os.path.join(RAW_DIR, "raw_measurements.csv"),
+    "old": os.path.join(RAW_DIR, "old.csv"),
+    "new": os.path.join(RAW_DIR, "new.csv"),
 }
 
 PREPARED_DIR = os.path.join("data", "prepared")
@@ -30,12 +30,10 @@ def main():
         for k, v in RAW_DATA_FILES.items()
     }
     print("Preparing data...")
-    for data_prep_function in [
-        prepare_data_interaction,
-        prepare_data_no_interaction,
-        prepare_data_fake_interaction,
-    ]:
-        prepared_data = data_prep_function(raw_data["raw_measurements"])
+    for data_prep_function, csv_file in zip(
+        [prepare_data_old, prepare_data_new], raw_data.values()
+    ):
+        prepared_data = data_prep_function(csv_file)
         output_dir = os.path.join(PREPARED_DIR, prepared_data.name)
         cv_dir = os.path.join(output_dir, "stan_inputs_cv")
         measurements_file = os.path.join(output_dir, "measurements.csv")
