@@ -41,6 +41,8 @@ def main():
             os.path.join(output_dir, f"stan_input_{s}.json")
             for s in ["prior", "posterior"]
         )
+        if not os.path.exists(PREPARED_DIR):
+            os.mkdir(PREPARED_DIR)
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
         if not os.path.exists(cv_dir):
